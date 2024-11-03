@@ -5,6 +5,10 @@
     <!-- Add internet permission to allow the WebView to load external content -->
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!-- Permissions for accessing location -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
