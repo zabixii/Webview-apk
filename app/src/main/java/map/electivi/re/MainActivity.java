@@ -1,8 +1,10 @@
 package map.electivi.re;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.webkit.GeolocationPermissions;
 import android.webkit.WebChromeClient;
@@ -29,7 +31,24 @@ public class MainActivity extends AppCompatActivity {
 
         // Set up WebView with location access and necessary settings
         webView = findViewById(R.id.webView);
-        webView.setWebViewClient(new WebViewClient());
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                // Check if the URL is a Google Maps link
+                if (url.startsWith("https://maps.google.com") || url.startsWith("geo:") || url.contains("maps.app.goo.gl")) {
+                    // Open Google Maps links in Google Maps app
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    startActivity(intent);
+                    return true; // Indicate that we've handled the link
+                } else if (url.startsWith("http://") || url.startsWith("https://")) {
+                    // Open all other web links in an external browser
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    startActivity(intent);
+                    return true; // Indicate that we've handled the link
+                }
+                return false; // Allow WebView to load the URL as default if not handled
+            }
+        });
 
         // Enable JavaScript and DOM storage
         WebSettings webSettings = webView.getSettings();
